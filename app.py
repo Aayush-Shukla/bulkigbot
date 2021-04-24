@@ -30,7 +30,7 @@ async def exec(username):
     t_response = stdout.decode().strip()
     return
 
-channelID=str(channelID)
+
 @app.on_message(filters.command(["start"]))
 def start(client, message):
     client.send_message(chat_id=channelID,
@@ -41,7 +41,9 @@ def start(client, message):
 async def getUname(client,message):
     uname=message.text
     direc="./{}".format(uname)
+    print(message.chat.id,":",type(message.chat.id),"\n",channelID,":",type(channelID))
     await (exec(uname))
+    # print(os.listdir(),os.listdir(".."))
     arr = os.listdir(direc)
     print(arr)
     media_arr=sortType(direc,arr)
