@@ -4,6 +4,7 @@ from credentials import bot_token, bot_user_name,API_HASH,APP_ID,TOOLSDIR,WDIR,i
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton,InputMediaPhoto, InputMediaVideo
 # import requests
 import os
+import time
 
 app = Client(
     "BulkigBOT",
@@ -55,6 +56,8 @@ async def getUname(client,message):
 
             medialist
         )
+        time.sleep(10)
+    print("ALL DONE")
 
 
 def sortType(direc,arr):
