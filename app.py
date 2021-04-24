@@ -30,7 +30,7 @@ async def exec(username):
     t_response = stdout.decode().strip()
     return
 
-
+channelID=str(channelID)
 @app.on_message(filters.command(["start"]))
 def start(client, message):
     client.send_message(chat_id=channelID,
