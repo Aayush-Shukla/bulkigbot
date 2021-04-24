@@ -12,6 +12,7 @@ app = Client(
     api_hash=API_HASH,
 
 )
+channelID=int(channelID)
 async def exec(username):
     command_to_exec = [
         "instagram-scraper",
@@ -41,6 +42,7 @@ def start(client, message):
 async def getUname(client,message):
     uname=message.text
     direc="./{}".format(uname)
+
     print(message.chat.id,":",type(message.chat.id),"\n",channelID,":",type(channelID))
     await (exec(uname))
     # print(os.listdir(),os.listdir(".."))
@@ -50,6 +52,7 @@ async def getUname(client,message):
     for medialist in media_arr:
         await client.send_media_group(
             channelID,
+
             medialist
         )
 
