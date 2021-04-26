@@ -14,10 +14,36 @@ app = Client(
 
 )
 channelID=int(channelID)
-async def exec(username):
+# async def exec(username):
+#
+#     return
+
+
+@app.on_message(filters.command(["start"]))
+def start(client, message):
+    client.send_message(chat_id=channelID,
+                        text="Hi")
+
+@app.on_message(filters.command(["some"]))
+async def start(client, message):
+    client.send_message(chat_id=channelID,
+                        text="Hi")
+    arr = os.listdir("./incessantloops")
+    await client.send_document(
+        chat_id=message.chat.id,
+        document="./incessantloops/"+arr[2]
+    )
+
+
+@app.on_message(filters.text)
+async def getUname(client,message):
+    uname=message.text
+    direc="./{}".format(uname)
+
+    print(message.chat.id,":",type(message.chat.id),"\n",channelID,":",type(channelID))
     command_to_exec = [
         "instagram-scraper",
-        username,"-u",igu,"-p",igp
+        uname, "-u", igu, "-p", igp
     ]
     print(" ".join(command_to_exec))
     process = await asyncio.create_subprocess_exec(
@@ -30,33 +56,41 @@ async def exec(username):
     e_response = stderr.decode().strip()
     # logger.info(e_response)
     t_response = stdout.decode().strip()
-    return
-
-
-@app.on_message(filters.command(["start"]))
-def start(client, message):
-    client.send_message(chat_id=channelID,
-                        text="Hi")
-
-
-@app.on_message(filters.text)
-async def getUname(client,message):
-    uname=message.text
-    direc="./{}".format(uname)
-
-    print(message.chat.id,":",type(message.chat.id),"\n",channelID,":",type(channelID))
-    await (exec(uname))
     # print(os.listdir(),os.listdir(".."))
     arr = os.listdir(direc)
     print(arr)
+    # re_arr = []
+    # for media in arr:
+    #     if media.split(".")[-1] == 'jpg':
+    #         re_arr.append(InputMediaPhoto("{}/{}".format(direc, media)))
+    #
+    #     elif media.split(".")[-1] == 'mp4':
+    #         re_arr.append(InputMediaVideo("{}/{}".format(direc, media)))
+    #
+
+
     media_arr=sortType(direc,arr)
-    for medialist in media_arr:
+    if len(media_arr)<11:
+        print("un10")
         await client.send_media_group(
             channelID,
 
-            medialist
+            media_arr
         )
-        time.sleep(10)
+
+    else:
+        media_arr_chunked=list(chunks(media_arr,10))
+        print(len(media_arr_chunked))
+
+        for medialist in media_arr_chunked:
+            print(medialist)
+            await client.send_media_group(
+                channelID,
+
+                medialist
+            )
+            print("Printset")
+            time.sleep(25)
     print("ALL DONE")
 
 
@@ -66,14 +100,18 @@ def sortType(direc,arr):
         if media.split(".")[-1]=='jpg':
             re_arr.append(InputMediaPhoto("{}/{}".format(direc,media)))
 
-        elif media.split(".")[-1] == 'mp4':
-            re_arr.append(InputMediaVideo("{}/{}".format(direc, media)))
-    return list(chunks(re_arr,10))
+        # elif media.split(".")[-1] == 'mp4':
+        #     re_arr.append(InputMediaVideo("{}/{}".format(direc, media)))
+    return re_arr
 
 def chunks(lst, n):
     """Yield successive n-sized chunks from lst."""
     for i in range(0, len(lst), n):
         yield lst[i:i + n]
+
+
+
+
 
 
 if __name__ == "__main__":
