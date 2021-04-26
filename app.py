@@ -73,7 +73,7 @@ async def getUname(client,message):
     if len(media_arr)<11:
         print("un10")
         await client.send_media_group(
-            channelID,
+            client.chat.id,
 
             media_arr
         )
@@ -85,12 +85,12 @@ async def getUname(client,message):
         for medialist in media_arr_chunked:
             print(medialist)
             await client.send_media_group(
-                channelID,
+                client.chat.id,
 
                 medialist
             )
             print("Printset")
-            time.sleep(25)
+            time.sleep(4)
     print("ALL DONE")
 
 
