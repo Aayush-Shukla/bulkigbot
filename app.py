@@ -90,7 +90,7 @@ async def getUname(client,message):
                 medialist
             )
             print("Printset")
-            time.sleep(4)
+            time.sleep(20)
     print("ALL DONE")
 
 
