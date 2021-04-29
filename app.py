@@ -69,9 +69,10 @@ async def getUname(client,message):
     #
 
 
-    media_arr=sortType(direc,arr)
-    if len(media_arr)<11:
+
+    if len(arr)<11:
         print("un10")
+        media_arr = sortType(direc, arr)
         await client.send_media_group(
             message.chat.id,
 
@@ -79,15 +80,16 @@ async def getUname(client,message):
         )
 
     else:
-        media_arr_chunked=list(chunks(media_arr,10))
-        print(len(media_arr_chunked))
+        media_list_chunked=list(chunks(arr,10))
+        print(len(media_list_chunked))
 
-        for medialist in media_arr_chunked:
-            print(medialist)
+        for medialist in media_list_chunked:
+            media_arr=sortType(direc, medialist)
+            # print(medialist)
             await client.send_media_group(
                 message.chat.id,
 
-                medialist
+                media_arr
             )
             print("Printset")
             time.sleep(20)
