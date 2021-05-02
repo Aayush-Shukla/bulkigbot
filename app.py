@@ -46,6 +46,7 @@ async def getUname(client,message):
         uname, "-u", igu, "-p", igp
     ]
     print(os.listdir())
+    open("{}.txt".format(uname), 'a').close()
     print(" ".join(command_to_exec))
     process = await asyncio.create_subprocess_exec(
         *command_to_exec,
@@ -94,6 +95,11 @@ async def getUname(client,message):
     print(os.listdir())
 
     os.remove("{}.txt".format(uname))
+    client.send_message(
+        chat_id=message.chat.id,
+
+        text="done"
+    )
     print("ALL DONE")
 
 

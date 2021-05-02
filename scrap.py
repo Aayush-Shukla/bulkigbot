@@ -30,7 +30,7 @@ import requests
 import requests.packages.urllib3.util.connection as urllib3_connection
 import tqdm
 
-from instagram_scraper.constants import *
+from constants import *
 
 try:
     reload(sys)  # Python 2.7
