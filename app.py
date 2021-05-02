@@ -46,6 +46,11 @@ async def getUname(client,message):
         uname, "-u", igu, "-p", igp
     ]
     print(os.listdir())
+    try:
+        os.remove("{}.txt".format(uname))
+    except:
+        pass
+
     open("{}.txt".format(uname), 'a').close()
     print(" ".join(command_to_exec))
     process = await asyncio.create_subprocess_exec(
@@ -57,45 +62,45 @@ async def getUname(client,message):
     stdout, stderr = await process.communicate()
 
     s = open("{}.txt".format(uname), "r")
-    media_group = []
-    count=0
+    # count=0
     links = s.readlines()
     print(len(links))
-    for link in links:
-        print(count)
+    chunked_links=chunks(links,10)
+    for chunk in chunked_links:
+        # print(count)
+        media_group = []
+
         # Get next line from file
+        for link in chunk:
 
-        if '.jpg?' in link:
-            if len(media_group)>10:
-                media_group.clear()
-                media_group.append(InputMediaPhoto(link))
+            if '.jpg?' in link:
 
+                    media_group.append(InputMediaPhoto(link))
 
-            else:
-                media_group.append(InputMediaPhoto(link))
-
-        elif '.mp4' in link:
-            try:
-                await client.send_video(message.chat.id, list)
-            except:
-                await client.send_document(message.chat.id, list)
-            time.sleep(1)
+            elif '.mp4' in link:
+                try:
+                    await client.send_video(message.chat.id, list)
+                except:
+                    await client.send_document(message.chat.id, list)
+                time.sleep(1)
 
 
-        if len(media_group)>0:
-            await client.send_media_group(
-                message.chat.id,
+            # if len(media_group)>0:
 
-                media_group
-            )
+            # if line is empty
+            # end of file is reached
+            # count = count + 1
 
-            time.sleep(20)
-        # if line is empty
-        # end of file is reached
-        count = count + 1
+        await client.send_media_group(
+            message.chat.id,
+
+            media_group
+        )
+
+        time.sleep(20)
 
 
-        print(link)
+        # print(link)
     print(os.listdir())
 
     os.remove("{}.txt".format(uname))
