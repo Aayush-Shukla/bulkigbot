@@ -60,7 +60,7 @@ async def getUname(client,message):
         stderr=asyncio.subprocess.PIPE,
     )
     stdout, stderr = await process.communicate()
-
+    print(stdout, stderr)
     s = open("{}.txt".format(uname), "r")
     # count=0
     links = s.readlines()
