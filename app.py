@@ -58,19 +58,23 @@ async def getUname(client,message):
 
     s = open("{}.txt".format(uname), "r")
     media_group = []
-
-    while True:
-
+    count=0
+    links = s.readlines()
+    print(len(links))
+    for link in links:
+        print(count)
         # Get next line from file
-        line = s.readline()
-        if '.jpg?' in line:
+
+        if '.jpg?' in link:
             if len(media_group)>10:
                 media_group.clear()
+                media_group.append(InputMediaPhoto(link))
+
 
             else:
-                media_group.append(InputMediaPhoto(line))
+                media_group.append(InputMediaPhoto(link))
 
-        elif '.mp4' in line:
+        elif '.mp4' in link:
             try:
                 await client.send_video(message.chat.id, list)
             except:
@@ -88,14 +92,14 @@ async def getUname(client,message):
             time.sleep(20)
         # if line is empty
         # end of file is reached
+        count = count + 1
 
-        if not line:
-            break
-        print(line)
+
+        print(link)
     print(os.listdir())
 
     os.remove("{}.txt".format(uname))
-    client.send_message(
+    await client.send_message(
         chat_id=message.chat.id,
 
         text="done"
