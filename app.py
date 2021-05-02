@@ -91,6 +91,8 @@ async def getUname(client,message):
         if not line:
             break
         print(line)
+    print(os.listdir())
+
     os.remove("{}.txt".format(uname))
     print("ALL DONE")
 
