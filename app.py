@@ -42,9 +42,10 @@ async def getUname(client,message):
 
     print(message.chat.id,":",type(message.chat.id),"\n",channelID,":",type(channelID))
     command_to_exec = [
-        "instagram-scraper",
+        "python","scrap.py",
         uname, "-u", igu, "-p", igp
     ]
+    print(os.listdir())
     print(" ".join(command_to_exec))
     process = await asyncio.create_subprocess_exec(
         *command_to_exec,
@@ -53,46 +54,44 @@ async def getUname(client,message):
         stderr=asyncio.subprocess.PIPE,
     )
     stdout, stderr = await process.communicate()
-    e_response = stderr.decode().strip()
-    # logger.info(e_response)
-    t_response = stdout.decode().strip()
-    # print(os.listdir(),os.listdir(".."))
-    arr = os.listdir(direc)
-    print(arr)
-    # re_arr = []
-    # for media in arr:
-    #     if media.split(".")[-1] == 'jpg':
-    #         re_arr.append(InputMediaPhoto("{}/{}".format(direc, media)))
-    #
-    #     elif media.split(".")[-1] == 'mp4':
-    #         re_arr.append(InputMediaVideo("{}/{}".format(direc, media)))
-    #
+
+    s = open("{}.txt".format(uname), "r")
+    media_group = []
+
+    while True:
+
+        # Get next line from file
+        line = s.readline()
+        if '.jpg?' in line:
+            if len(media_group)>10:
+                media_group.clear()
+
+            else:
+                media_group.append(InputMediaPhoto(line))
+
+        elif '.mp4' in line:
+            try:
+                await client.send_video(message.chat.id, list)
+            except:
+                await client.send_document(message.chat.id, list)
+            time.sleep(1)
 
 
-
-    if len(arr)<11:
-        print("un10")
-        media_arr = sortType(direc, arr)
-        await client.send_media_group(
-            message.chat.id,
-
-            media_arr
-        )
-
-    else:
-        media_list_chunked=list(chunks(arr,10))
-        print(len(media_list_chunked))
-
-        for medialist in media_list_chunked:
-            media_arr=sortType(direc, medialist)
-            # print(medialist)
+        if len(media_group)>0:
             await client.send_media_group(
                 message.chat.id,
 
-                media_arr
+                media_group
             )
-            print("Printset")
+
             time.sleep(20)
+        # if line is empty
+        # end of file is reached
+
+        if not line:
+            break
+        print(line)
+    os.remove("{}.txt".format(uname))
     print("ALL DONE")
 
 
