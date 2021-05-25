@@ -43,8 +43,7 @@ async def getUname(client,message):
     print(message.chat.id,":",type(message.chat.id),"\n",channelID,":",type(channelID))
     command_to_exec = [
         "python","scrap.py",
-        uname, "-u", igu, "-p", igp
-    ]
+        uname
     print(os.listdir())
     try:
         os.remove("{}.txt".format(uname))
